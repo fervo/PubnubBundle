@@ -1,0 +1,15 @@
+{
+    "name": "fervo/pubnub-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Magnus Nordlander",
+            "email": "magnus@fervo.se"
+        }
+    ],
+    "require": {
+        "symfony/framework-bundle": "~2.7|~3.0",
+        "pubnub/pubnub": "~3.8",
+        "ramsey/uuid": "~3.0"
+    }
+}
