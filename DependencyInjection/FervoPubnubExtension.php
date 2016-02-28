@@ -7,9 +7,12 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Fervo\EnvironmentBundle\ConfigurationResolverTrait;
 
 class FervoPubnubExtension extends Extension
 {
+    use ConfigurationResolverTrait;
+
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
@@ -22,10 +25,18 @@ class FervoPubnubExtension extends Extension
         );
         $loader->load('services.yml');
 
-        $container->setParameter('fervo_pubnub.subscribe_key', $config['subscribe_key']);
-        $container->setParameter('fervo_pubnub.publish_key', $config['publish_key']);
-        $container->setParameter('fervo_pubnub.secret_key', $config['secret_key']);
+        $def = $container->getDefinition('fervo_pubnub');
+        $argument = $def->getArgument(0);
+        $argument['publish_key'] = $this->resolve($config['publish_key']);
+        $argument['subscribe_key'] = $this->resolve($config['subscribe_key']);
+        $argument['secret_key'] = $this->resolve($config['secret_key']);
+        $def->replaceArgument(0, $argument);
 
+        $def = $container->getDefinition('fervo_pubnub.twig_extension');
+        $def->replaceArgument(0, $this->resolve($config['subscribe_key']));
+        $def->replaceArgument(1, $this->resolve($config['publish_key']));
+
+/*
         if (isset($config['uuid'])) {
             if ($config['uuid']['service']) {
                 $container->setAlias('fervo_pubnub.uuid_provider', $config['uuid']['service']);
@@ -39,6 +50,6 @@ class FervoPubnubExtension extends Extension
             $container->getDefinition('fervo_pubnub')
                 ->addMethodCall('setUUID', [new Expression('service(\'fervo_pubnub.uuid_provider\').getSessionUUID()')])
             ;
-        }
+        }*/
     }
 }

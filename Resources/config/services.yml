@@ -3,17 +3,19 @@ services:
         class: Pubnub\Pubnub
         arguments:
             -
-                publish_key: %fervo_pubnub.publish_key%
-                subscribe_key: %fervo_pubnub.subscribe_key%
-                secret_key: %fervo_pubnub.secret_key%
-                logger: @fervo_pubnub.logger
+                publish_key: ~
+                subscribe_key: ~
+                secret_key: ~
+                logger: "@logger"
+        tags:
+            - { name: monolog.logger, channel: pubnub }
 
     fervo_pubnub.twig_extension:
         class: Fervo\PubnubBundle\Twig\PubnubExtension
         arguments:
-            - %fervo_pubnub.subscribe_key%
-            - %fervo_pubnub.publish_key%
-            - @?fervo_pubnub.uuid_provider
+            - ~
+            - ~
+            - "@?fervo_pubnub.uuid_provider"
         tags:
             - { name: twig.extension }
 
@@ -21,16 +23,9 @@ services:
         class: Fervo\PubnubBundle\UUIDProvider\PropertyPathUUIDProvider
         public: false
         arguments:
-            - @security.token_storage
+            - "@security.token_storage"
             - ~
             - true
-
-    fervo_pubnub.logger:
-        class: Fervo\PubnubBundle\Logger\PSR3Logger
-        arguments:
-            - @logger
-        tags:
-            - { name: monolog.logger, channel: pubnub }
 
     pubnub:
         alias: fervo_pubnub
