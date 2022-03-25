@@ -3,8 +3,10 @@
 namespace Fervo\PubnubBundle\Twig;
 
 use Fervo\PubnubBundle\UUIDProvider\UUIDProviderInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class PubnubExtension extends \Twig_Extension
+class PubnubExtension extends AbstractExtension
 {
     protected $subscribeKey;
     protected $publishKey;
@@ -32,7 +34,7 @@ class PubnubExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('pubnub_uuid', array($this, 'uuid')),
+            new TwigFunction('pubnub_uuid', array($this, 'uuid')),
         );
     }
 

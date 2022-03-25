@@ -9,8 +9,8 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('fervo_pubnub');
+        $treeBuilder = new TreeBuilder('fervo_pubnub');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
