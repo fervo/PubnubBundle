@@ -4,9 +4,10 @@ namespace Fervo\PubnubBundle\Twig;
 
 use Fervo\PubnubBundle\UUIDProvider\UUIDProviderInterface;
 use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
 use Twig\TwigFunction;
 
-class PubnubExtension extends AbstractExtension
+class PubnubExtension extends AbstractExtension implements GlobalsInterface
 {
     protected $subscribeKey;
     protected $publishKey;
@@ -43,7 +44,7 @@ class PubnubExtension extends AbstractExtension
      *
      * @return array An array of global variables
      */
-    public function getGlobals()
+    public function getGlobals(): array
     {
         return [
             'pubnub_subscribe_key' => $this->subscribeKey,
